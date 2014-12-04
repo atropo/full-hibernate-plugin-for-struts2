@@ -1,7 +1,7 @@
 full-hibernate-plugin-for-struts2
 =================================
 
-Hibernate Validator integration, Hibernate Core Sessions injection capability, Transactions injection capability and Hibernate Core configuration management Web Tool
+Hibernate Validator integration for struts2.
 
 A fork of 
 <a href="https://code.google.com/p/full-hibernate-plugin-for-struts2/" target="_blank">
@@ -15,7 +15,6 @@ Alternative Tutorial
 </a>
 </h4>
 
-<h4>Hibernate Validator integration</h4>
 
 DRY - Don't Repeat Yourself!
 
