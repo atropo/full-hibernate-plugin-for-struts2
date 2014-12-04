@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+    
+<struts>
+	<!-- Author: José Yoshiriro - jyoshiriro@gmail.com -->
+	
+    <package name="hibernate-default" extends="struts-default" abstract="true">
+        
+        
+        <interceptors>
+        	
+        	<interceptor name="hibernateSessionInterceptor" class="com.googlecode.s2hibernate.struts2.plugin.interceptors.SessionTransactionInjectorInterceptor" />
+        	<interceptor name="hibernateValidatorInterceptor" class="com.googlecode.s2hibernate.struts2.plugin.s2hibernatevalidator.interceptor.HibernateValidatorInterceptor">
+        		<param name="excludeMethods">input,prepare,back,cancel,browse</param>
+        	</interceptor>
+        	
+        	<interceptor-stack name="defaultStackNoValidation">
+               <interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="servletConfig"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="profiling"/>
+                <interceptor-ref name="scopedModelDriven"/>
+                <interceptor-ref name="modelDriven"/>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="staticParams"/>
+                <interceptor-ref name="params">
+                  <param name="excludeParams">dojo\..*,^struts\..*</param>
+                </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+        	</interceptor-stack>
+
+			<interceptor-stack name="basicStackHibernate">
+				<interceptor-ref name="basicStack"/>
+				<interceptor-ref name="hibernateSessionInterceptor"/>
+		    </interceptor-stack>
+		    
+			<interceptor-stack name="defaultStackHibernate">
+				<interceptor-ref name="defaultStackNoValidation"/>
+				<interceptor-ref name="hibernateSessionInterceptor"/>
+				<interceptor-ref name="hibernateValidatorInterceptor"/>
+		    </interceptor-stack>
+		    
+			<interceptor-stack name="defaultStackHibernateStrutsValidation">
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="hibernateSessionInterceptor"/>
+		    </interceptor-stack>
+		    
+        </interceptors>
+        
+        <default-interceptor-ref name="defaultStackHibernate"/><!--
+        
+        <global-exception-mappings>
+        	<exception-mapping exception="org.hibernate.validator.InvalidStateException" result="input" name="input"/>
+        </global-exception-mappings>
+        
+    --></package>
+    
+    
+    <package name="hibernateManager" namespace="/hibernateManager" extends="struts-default">
+    
+    	<interceptors>
+    		<interceptor name="hibernatePluginInterceptor" class="com.googlecode.s2hibernate.struts2.plugin.interceptors.InternalHibernatePluginInterceptor" />
+    		<interceptor name="managerInterceptor" class="com.googlecode.s2hibernate.struts2.plugin.interceptors.HibernateManagementInterceptor" />
+    	</interceptors>
+    	
+    	<default-class-ref class="com.googlecode.s2hibernate.struts2.plugin.actions.HibernateManagementAction"/>
+    	
+    	<action name="" method="index">
+    		<interceptor-ref name="hibernatePluginInterceptor"/>
+    		<interceptor-ref name="managerInterceptor"/>
+    		<interceptor-ref name="validationWorkflowStack"/>
+    		<result>/WEB-INF/temp/hibernatePlugin/management.jsp</result>
+    		<result name="input">/WEB-INF/temp/hibernatePlugin/management.jsp</result>
+    	</action>
+    	<action name="*" method="{1}">
+    		<interceptor-ref name="hibernatePluginInterceptor"/>
+    		<interceptor-ref name="managerInterceptor"/>
+    		<interceptor-ref name="validationWorkflowStack"/>
+    		<result>/WEB-INF/temp/hibernatePlugin/management.jsp</result>
+    		<result name="input">/WEB-INF/temp/hibernatePlugin/management.jsp</result>
+    	</action>
+    	
+    </package>
+    
+</struts>
