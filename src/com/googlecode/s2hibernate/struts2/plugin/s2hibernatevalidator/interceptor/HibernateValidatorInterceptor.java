@@ -6,9 +6,9 @@ import java.util.Locale;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
+import com.googlecode.s2hibernate.struts2.plugin.annotations.Validated;
 import com.googlecode.s2hibernate.struts2.plugin.interceptors.GenericInterceptor;
 import com.googlecode.s2hibernate.struts2.plugin.s2hibernatevalidator.validators.Struts2HibernateValidator;
-import com.googlecode.s2hibernate.struts2.plugin.s2hibernatevalidator.validators.Struts2HibernateValidatorV310;
 import com.googlecode.s2hibernate.struts2.plugin.s2hibernatevalidator.validators.Struts2HibernateValidatorV402;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ActionSupport;
@@ -32,14 +32,6 @@ public class HibernateValidatorInterceptor extends GenericInterceptor{
 		if (validator!=null)
 			return validator;
 		
-		try {
-			Class.forName("org.hibernate.validator.InvalidValue");
-			validator = new Struts2HibernateValidatorV310();
-			log.info("Full Hibernate Plugin Validation using Hibernate Validator 3.x");
-			return validator;
-		} catch (ClassNotFoundException e) {
-			log.info("Full Hibernate Plugin Validation could not detect Hibernate Validator 3.x");
-		}
 		try {
 			Class.forName("org.hibernate.validator.HibernateValidator");
 			validator = new Struts2HibernateValidatorV402();
@@ -73,6 +65,12 @@ public class HibernateValidatorInterceptor extends GenericInterceptor{
 			log.warn("Full Hibernate Plugin Validation Allowed only in Actions that 'ISA' ActionSupport");
 			return invocation.invoke();
 		}
+		
+		Class<?>[] groups = {};
+		Validated groupAnnotation = method.getAnnotation(Validated.class);
+		if (groupAnnotation != null) {
+			groups = groupAnnotation.value();
+		}
 		ActionSupport actionAs = (ActionSupport) action;
 		log.debug("Full Hibernate Plugin Validation in "+actionAs.getClass());
 		
@@ -80,7 +78,7 @@ public class HibernateValidatorInterceptor extends GenericInterceptor{
 		
 //		List<InvalidValue> invalidValuesFromRequest = new ArrayList<InvalidValue>();
 		
-		Collection invalidValuesFromRequest = validator.validate(actionAs, clientLocale,getClass().getClassLoader());
+		Collection invalidValuesFromRequest = validator.validate(actionAs, clientLocale,getClass().getClassLoader(), groups);
 		/*
 		ResourceBundle clientResourceBundle = ResourceBundle.getBundle("org.hibernate.validator.resources.DefaultValidatorMessages", clientLocale, this.getClass().getClassLoader());
 		InputStream stream = getClass().getResourceAsStream("/ValidatorMessages.properties");

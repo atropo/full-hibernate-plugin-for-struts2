@@ -30,7 +30,7 @@ public class Struts2HibernateValidatorV402 implements Struts2HibernateValidator{
 	static Map<String, MessageInterpolator> localesMap = new TreeMap<String, MessageInterpolator>();
 	
 	public List<ConstraintViolation> validate(ActionSupport actionAs, Locale clientLocale,
-			ClassLoader classLoader)
+			ClassLoader classLoader, Class<?>[] groups)
 			throws IOException {
 		List<ConstraintViolation> invalidValuesFromRequest = new ArrayList<ConstraintViolation>();
 		
@@ -52,7 +52,7 @@ public class Struts2HibernateValidatorV402 implements Struts2HibernateValidator{
 
 		Validator validator = factory.usingContext().messageInterpolator(interpolator).getValidator();
 		
-		Set<ConstraintViolation<ActionSupport>> constraintViolations = validator.validate(actionAs);
+		Set<ConstraintViolation<ActionSupport>> constraintViolations = validator.validate(actionAs, groups);
 		
 		List<Path> invalidFieldNames = new ArrayList<Path>();
 		Map parameters = ActionContext.getContext().getParameters();

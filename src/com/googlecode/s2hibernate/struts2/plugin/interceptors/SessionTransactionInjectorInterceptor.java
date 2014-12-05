@@ -43,7 +43,7 @@ import com.opensymphony.xwork2.inject.Inject;
  *
  * <br/><br/>
  * 
- * Interceptor para injeção da Sessão Hibernate e da Transação
+ * Interceptor for Hibernate Session and Transaction Injection
  *
  * @author Jose Yoshiriro - jyoshiriro@gmail.com
  *
@@ -289,7 +289,7 @@ public class SessionTransactionInjectorInterceptor extends GenericInterceptor im
 				log.debug("Hibernate Session closed by custom Hibernate Session Factory ("+sessionFactory.getClass().getName()+")");
 			}
 		} else {
-			//TODO: verificar se o Hibernate Manager está Habilitado antes de por as sessões no contexto de aplicação para economizar memória!
+			//TODO: verificar se o Hibernate Manager estï¿½ Habilitado antes de por as sessï¿½es no contexto de aplicaï¿½ï¿½o para economizar memï¿½ria!
 			Set<SessionInfo> hibernateSessions = (Set<SessionInfo>) ActionContext.getContext().getApplication().get("struts2HibernatePlugin_Sessions");
 			if (hibernateSessions==null)
 				hibernateSessions = new LinkedHashSet<SessionInfo>();
