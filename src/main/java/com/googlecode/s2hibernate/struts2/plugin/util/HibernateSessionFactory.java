@@ -9,7 +9,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+import org.apache.log4j.lf5.util.Resource;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,12 +22,11 @@ import org.hibernate.cfg.Configuration;
 import com.googlecode.s2hibernate.lang.BuildSessionFactoryException;
 import com.googlecode.s2hibernate.lang.LoadSessionFromFactoryException;
 import com.googlecode.s2hibernate.lang.SessionFactoryNotFoundException;
-import org.apache.logging.log4j.Logger;
 
 
 /**
  * Hibernate Core Session Factory from Full Hibernate Plugin for Struts 2.
- * @author Josï¿½ Yoshiriro - jyoshiriro@gmail.com
+ * @author José Yoshiriro - jyoshiriro@gmail.com
  *
  */
 public class HibernateSessionFactory {
@@ -53,11 +56,15 @@ public class HibernateSessionFactory {
     public static void initLogger() {
     	if (log!=null)
     		return;
-    	log = LogManager.getLogger(HibernateSessionFactory.class);
+    	log = Logger.getLogger(HibernateSessionFactory.class);
+		if (!log.getRootLogger().getAllAppenders().hasMoreElements())
+			log.addAppender(new ConsoleAppender(new PatternLayout("%d{HH:mm:ss} - %p: %m %n")));
+		log.setLevel(Level.WARN);
     }
     
     public static void setLoggerDebugLevel(){
-        
+    	if (!log.getLevel().equals(Level.DEBUG))
+    		log.setLevel(Level.DEBUG);
     }
 
     /**
