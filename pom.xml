@@ -2,10 +2,10 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.letek</groupId>
-    <artifactId>full-hibernate-plugin-for-struts2</artifactId>
+    <artifactId>struts2-fullhibernatecore-plugin</artifactId>
     <packaging>jar</packaging>
     <version>3.0.0-GA</version>
-    <name>full-hibernate-plugin-for-struts2</name>
+    <name>struts2-fullhibernatecore-plugin</name>
     <url>https://github.com/javalover123/full-hibernate-plugin-for-struts2</url>
 
     <dependencies>
@@ -57,9 +57,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.9</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.16.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
